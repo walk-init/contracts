@@ -1,0 +1,23 @@
+{
+  "name": "@walkcat/contracts",
+  "version": "0.0.1",
+  "description": "Contracts for the walkcat platform",
+  "scripts": {
+    "proto:gen": "protoc -I ./proto ./proto/*.proto --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./gen --ts_proto_opt=nestJs=true,package=omit",
+    "prepublishOnly": "yarn proto:gen"
+  },
+  "files": [
+    "proto",
+    "gen"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "ts-proto": "^2.11.8"
+  },
+  "dependencies": {
+    "@nestjs/microservices": "^11.1.24",
+    "rxjs": "^7.8.2"
+  }
+}
