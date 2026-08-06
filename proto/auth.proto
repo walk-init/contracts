@@ -5,6 +5,7 @@ package auth.v1;
 service AuthService {
     rpc SendOTP(SendOTPRequest) returns (SendOTPResponse);
     rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse);
+    rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
 }
 
 message SendOTPRequest {
@@ -24,6 +25,15 @@ message VerifyOTPRequest {
 }
 
 message VerifyOTPResponse {
+    string access_token = 1;
+    string refresh_token = 2;
+}
+
+message RefreshTokenRequest {
+    string refresh_token = 1;
+}
+
+message RefreshTokenResponse {
     string access_token = 1;
     string refresh_token = 2;
 }
