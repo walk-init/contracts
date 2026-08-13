@@ -28,11 +28,11 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Build package
-        run: yarn build
-
       - name: Generate code
         run: yarn proto:gen
+
+      - name: Build package
+        run: yarn build
 
       - name: Publish package
         run: npm publish --access public
