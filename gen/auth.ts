@@ -19,19 +19,49 @@ export interface SendOTPResponse {
   ok: boolean;
 }
 
+export interface VerifyOTPRequest {
+  identifier: string;
+  type: string;
+  code: string;
+}
+
+export interface VerifyOTPResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
+export interface RefreshTokenResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
 export const AUTH_V1_PACKAGE_NAME = "auth.v1";
 
 export interface AuthServiceClient {
   sendOtp(request: SendOTPRequest): Observable<SendOTPResponse>;
+
+  verifyOtp(request: VerifyOTPRequest): Observable<VerifyOTPResponse>;
+
+  refreshToken(request: RefreshTokenRequest): Observable<RefreshTokenResponse>;
 }
 
 export interface AuthServiceController {
   sendOtp(request: SendOTPRequest): Promise<SendOTPResponse> | Observable<SendOTPResponse> | SendOTPResponse;
+
+  verifyOtp(request: VerifyOTPRequest): Promise<VerifyOTPResponse> | Observable<VerifyOTPResponse> | VerifyOTPResponse;
+
+  refreshToken(
+    request: RefreshTokenRequest,
+  ): Promise<RefreshTokenResponse> | Observable<RefreshTokenResponse> | RefreshTokenResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["sendOtp"];
+    const grpcMethods: string[] = ["sendOtp", "verifyOtp", "refreshToken"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);
