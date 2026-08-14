@@ -1,17 +1,28 @@
 {
   "name": "@walkcat/contracts",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Contracts for the walkcat platform",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./gen/*": {
+      "types": "./dist/gen/*.d.ts",
+      "default": "./dist/gen/*.js"
+    }
+  },
+  "license": "UNLICENSED",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "proto:gen": "protoc -I ./proto ./proto/*.proto --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./gen --ts_proto_opt=nestJs=true,package=omit",
-    "prepublishOnly": "yarn proto:gen"
+    "proto:gen": "mkdir -p src/gen && protoc -I ./proto ./proto/*.proto --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./src/gen --ts_proto_opt=nestJs=true,package=omit",
+    "prepublishOnly": "yarn proto:gen && yarn build"
   },
   "files": [
     "proto",
-    "gen",
     "dist"
   ],
   "publishConfig": {
