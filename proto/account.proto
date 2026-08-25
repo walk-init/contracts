@@ -4,6 +4,12 @@ package account.v1;
 
 service AccountService {
     rpc GetAccount(GetAccountRequest) returns (GetAccountResponse);
+
+    rpc initEmailChange(InitEmailChangeRequest) returns (InitEmailChangeResponse);
+    rpc confirmEmailChange(ConfirmEmailChangeRequest) returns (ConfirmEmailChangeResponse);
+
+    rpc initPhoneChange(InitPhoneChangeRequest) returns (InitPhoneChangeResponse);
+    rpc confirmPhoneChange(ConfirmPhoneChangeRequest) returns (ConfirmPhoneChangeResponse);
 }
 
 message GetAccountRequest {
@@ -17,6 +23,44 @@ message GetAccountResponse {
     bool isEmailVerified = 4;
     bool isPhoneVerified = 5;
     RoleName roleName = 6;
+}
+
+message InitEmailChangeRequest {
+    string email = 1;
+    string user_id = 2;
+}
+
+message InitEmailChangeResponse {
+    bool ok = 1;
+}
+
+message ConfirmEmailChangeRequest {
+    string email = 1;
+    string user_id = 2;
+    string code = 3;
+}
+
+message ConfirmEmailChangeResponse {
+    bool ok = 1;
+}
+
+message InitPhoneChangeRequest {
+    string phone = 1;
+    string user_id = 2;
+}
+
+message InitPhoneChangeResponse {
+    bool ok = 1;
+}
+
+message ConfirmPhoneChangeRequest {
+    string phone = 1;
+    string user_id = 2;
+    string code = 3;
+}
+
+message ConfirmPhoneChangeResponse {
+    bool ok = 1;
 }
 
 enum RoleName {
