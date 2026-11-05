@@ -17,10 +17,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Uses oauth2:<token> so Personal / Project / Group access tokens all work
+      # without depending on GITLAB_USERNAME matching the token type.
+      # Secret: GITLAB_MIRROW_TOKEN — GitLab token with write_repository on
+      # walkcat-mirrow/contracts (PAT, Project Access Token, or Group Access Token).
       - name: Push to GitLab
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROW_TOKEN }}
-          GITLAB_USER: ${{ secrets.GITLAB_USERNAME }}
         run: |
-          git remote add gitlab "https://${GITLAB_USER}:${GITLAB_TOKEN}@gitlab.com/walkcat-mirrow/contracts.git"
+          if [ -z "${GITLAB_TOKEN}" ]; then
+            echo "::error::Secret GITLAB_MIRROW_TOKEN is missing or empty."
+            echo "Create a GitLab token with write_repository for walkcat-mirrow/contracts"
+            echo "and set it as GitHub Actions secret GITLAB_MIRROW_TOKEN."
+            exit 1
+          fi
+
+          git remote add gitlab \
+            "https://oauth2:${GITLAB_TOKEN}@gitlab.com/walkcat-mirrow/contracts.git"
           git push gitlab "HEAD:${GITHUB_REF_NAME}" --force
